@@ -1,0 +1,1 @@
+export { ConectToService, IConectToService } from './ConectToService.decorator';
