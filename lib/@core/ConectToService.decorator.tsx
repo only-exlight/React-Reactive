@@ -5,8 +5,8 @@ export interface IConectToService {
     service: Function,
 }
 
-export function ConectToService(params: IConectToService): any {
-    return function InjectService () {
+export function InjectServices(params: IConectToService): any {
+    return function () {
         class SComponent extends React.Component {
             public service: any;
             constructor(props: any) {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ApplicationSerrvice } from '../../services/app.service';
-import { ConectToService } from '../../../../lib/@core';
+import { InjectServices } from '../../../../lib/@core';
 
 interface IHeadComponentState {
     time: number;
@@ -10,7 +10,14 @@ interface IHeadComponentProps {
     service: ApplicationSerrvice
 }
 
-@ConectToService({
+/**
+    From Angular realisation
+    constructor(
+        private appSrv: ApplicationSerrvice
+    ) { }
+ */
+
+@InjectServices({
     component: HeadComponent,
     service: ApplicationSerrvice
 })

@@ -26,7 +26,6 @@ export class ReactApp {
 
     public initApp(): void {
         const RootComponent = this.rootComponent;
-        console.log(this.components);
         render(
             <BrowserRouter>
                 <RootComponent routes={this.routes} />
@@ -42,7 +41,6 @@ export class ReactApp {
 
     private initComponent() {
         this.components.forEach((c: Function) => {
-            console.log(c.prototype.service);
             c.prototype.service = this.services[c.prototype.service];
         });
     }
