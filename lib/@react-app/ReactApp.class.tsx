@@ -1,5 +1,4 @@
 import { IRoutingConfig } from '../@routing';
-import { IServiceDescriptor } from './index';
 import { IReactAppConfig } from './ReactAppConfig.interface';
 import { BrowserRouter } from 'react-router-dom';
 import { render, } from 'react-dom';
@@ -35,14 +34,15 @@ export class ReactApp {
         );
     }
 
-    private initServices(serviceDescriptor: IServiceDescriptor[] = []): void {
-        serviceDescriptor.forEach((descriptor: IServiceDescriptor) => {
-            this.services[descriptor.name] = new descriptor.constructor();
+    private initServices(serviceDescriptor: FunctionConstructor[] = []): void {
+        serviceDescriptor.forEach((srv: FunctionConstructor) => {
+            this.services[srv.name] = new srv();
         });
     }
 
     private initComponent() {
         this.components.forEach((c: Function) => {
+            console.log(c.prototype.service);
             c.prototype.service = this.services[c.prototype.service];
         });
     }

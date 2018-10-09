@@ -21,14 +21,14 @@ const getPlugins = (mode, domain) => {
         new BaseHrefWebpackPlugin({
             baseHref: '/'
         }),
-        new CopyWebpackPlugin([{
+        new CopyWebpackPlugin([/*{
                 from: './src/assets',
                 to: './build/[name].[ext]'
             },
             {
                 from: './src/assets/fonts',
                 to: './build/fonts/[name].[ext]'
-            },
+            },*/
             {
                 from: './src/favicon.ico',
                 to: './favicon.ico'

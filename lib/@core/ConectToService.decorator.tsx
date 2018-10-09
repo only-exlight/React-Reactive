@@ -1,21 +1,17 @@
 import * as React from 'react';
-import { ReactApp } from '../@react-app/ReactApp.class';
 
 export interface IConectToService {
     component: any,
-    service: string,
-    application: ReactApp
+    service: Function,
 }
 
 export function ConectToService(params: IConectToService): any {
     return function InjectService () {
         class SComponent extends React.Component {
-            public decoreServece: boolean;
             public service: any;
             constructor(props: any) {
                 super(props);
                 this.service = SComponent.prototype.service;
-                this.decoreServece = true;
             }
 
             render() {
@@ -24,10 +20,7 @@ export function ConectToService(params: IConectToService): any {
                 );
             }
         }
-
-        SComponent.prototype.decoreServece = true;
-        SComponent.prototype.service = params.service;
-
+        SComponent.prototype.service = params.service.name;
         return SComponent;
     }
 }

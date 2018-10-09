@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ApplicationSerrvice } from '../../services/app.service';
-import { ConectToService, IConectToService } from '../../../../lib/@core';
-import { APP } from '../../../index';
+import { ConectToService } from '../../../../lib/@core';
 
 interface IHeadComponentState {
     time: number;
@@ -13,17 +12,14 @@ interface IHeadComponentProps {
 
 @ConectToService({
     component: HeadComponent,
-    service: 'ApplicationService',
-    application: APP
+    service: ApplicationSerrvice
 })
 
 export class HeadComponent extends React.Component<IHeadComponentProps> {
-    private timeService: ApplicationSerrvice;
     public state: IHeadComponentState;
 
     constructor(props: any) {
         super(props);
-        this.timeService = new ApplicationSerrvice();
         this.state = {
             time: 0
         };
@@ -31,7 +27,6 @@ export class HeadComponent extends React.Component<IHeadComponentProps> {
 
     componentDidMount() {
         this.props.service.workTime.subscribe(time => this.setState({ time: time}));
-        // this.timeService.workTime.subscribe(time => this.setState({ time: time }))
     }
 
     public render() {
