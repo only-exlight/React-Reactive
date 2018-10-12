@@ -34,14 +34,19 @@ export class ReactApp {
     }
 
     private initServices(serviceDescriptor: FunctionConstructor[] = []): void {
-        serviceDescriptor.forEach((srv: FunctionConstructor) => {
-            this.services[srv.name] = new srv();
+        serviceDescriptor.forEach((Srv: FunctionConstructor) => {
+            const srvName = Srv.name.charAt(0).toLowerCase() + Srv.name.substr(1);
+            this.services[srvName] = new Srv();
         });
     }
 
     private initComponent() {
-        this.components.forEach((c: Function) => {
-            c.prototype.service = this.services[c.prototype.service];
-        });
+        this.components.forEach((cmp: Function) => {
+            cmp.prototype.services =
+                cmp.prototype.serviceNames.map((srv: string) => {
+                    return this.services[srv]
+                })
+        }
+        );
     }
 }
