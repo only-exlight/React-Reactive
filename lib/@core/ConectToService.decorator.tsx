@@ -1,12 +1,7 @@
 import * as React from 'react';
-import { generate } from 'rxjs';
+import { IInjector } from './Inject.interface';
 
-export interface IConectToService {
-    component: any,
-    services: Function[],
-}
-
-export function InjectServices(params: IConectToService): any {
+export function InjectServices(params: IInjector): any {
     return function () {
         class SComponent extends React.Component {
             public serviceNames: string[];
@@ -23,7 +18,7 @@ export function InjectServices(params: IConectToService): any {
 
             public render() {
                 return (
-                    <params.component {...this.servicesInstanses} />
+                    <params.target {...this.servicesInstanses} />
                 );
             }
         }

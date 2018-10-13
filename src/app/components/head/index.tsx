@@ -18,7 +18,7 @@ interface IHeadComponentProps {
  */
 
 @InjectServices({
-    component: HeadComponent,
+    target: HeadComponent,
     services: [ApplicationSerrvice]
 })
 
@@ -33,7 +33,8 @@ export class HeadComponent extends React.Component<IHeadComponentProps> {
     }
 
     componentDidMount() {
-        this.props.applicationSerrvice.workTime.subscribe(time => this.setState({ time: time }));
+        this.props.applicationSerrvice.workTime.
+            subscribe(time => this.setState({ time: time }));
     }
 
     public render() {

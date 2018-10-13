@@ -1,1 +1,3 @@
-export { InjectServices, IConectToService } from './ConectToService.decorator';
+export { InjectServices } from './ConectToService.decorator';
+export { Injector } from './InjectServices';
+export {  IInjector } from './Inject.interface';

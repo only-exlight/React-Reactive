@@ -33,20 +33,49 @@ export class ReactApp {
         );
     }
 
-    private initServices(serviceDescriptor: FunctionConstructor[] = []): void {
-        serviceDescriptor.forEach((Srv: FunctionConstructor) => {
-            const srvName = Srv.name.charAt(0).toLowerCase() + Srv.name.substr(1);
-            this.services[srvName] = new Srv();
+    private initServices(serviceDscr: FunctionConstructor[] = []): void {
+        serviceDscr.forEach((Srv: any) => {
+            const srvName = this.getInstanceName(Srv.name);
+            if (Srv.prototype.servicesNames) {
+                const dpndsList = this.getDependencies(Srv.prototype.servicesNames, serviceDscr);
+                this.services[srvName ] = new Srv(...dpndsList);
+            } else {
+                this.services[srvName] = new Srv();
+            }
         });
+        console.log(this.services);
+    }
+
+    private getDependencies(dpndsList: string[], serviceDscr: any[] = []): object[] {
+        if (dpndsList) {
+            const instanceList: object[] = [];
+            dpndsList.forEach(dpnd => {
+                const instName = this.getInstanceName(dpnd);
+                if (this.services[instName]) {
+                    instanceList.push(this.services[instName]);
+                } else {
+                    const SrvInst = serviceDscr.find(srv => srv.name === dpnd);
+                    if (SrvInst.prototype.servicesNames) {
+                        const dpndsList = this.getDependencies(SrvInst.prototype.servicesNames, serviceDscr);
+                        this.services[instName] = new SrvInst(...dpndsList);
+                    } else {
+                        this.services[instName] = new SrvInst();
+                    }
+                }
+            })
+
+            return instanceList;
+        }
+    }
+
+    private getInstanceName(className: string) {
+        return className.charAt(0).toLowerCase() + className.substr(1);
     }
 
     private initComponent() {
-        this.components.forEach((cmp: Function) => {
+        this.components.forEach((cmp: Function) =>
             cmp.prototype.services =
-                cmp.prototype.serviceNames.map((srv: string) => {
-                    return this.services[srv]
-                })
-        }
+            cmp.prototype.serviceNames.map((srv: string) => this.services[srv])
         );
     }
 }
