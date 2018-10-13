@@ -1,3 +1,10 @@
+/**
+ * @file Decorator function for React-Reactive components
+ * @author Kernichnyy Andrey
+ * @version 0.0.2
+ * @copyright eXlight 2018
+ */
+
 import { IRoutingConfig } from '../@routing';
 import { IReactAppConfig } from './ReactAppConfig.interface';
 import { BrowserRouter } from 'react-router-dom';
