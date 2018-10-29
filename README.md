@@ -19,17 +19,15 @@ React + Redux?
 Конфигурационный файл приложения
 ```ts
 export const REACT_APP: IReactAppConfig = {
+    rootComponent: AppComponent,
     components: [
         HeadComponent,
     ],
-    rootComponent: AppComponent,
-    services: [{
-        name: 'ApplicationService',
-        constructor: ApplicationSerrvice
-    },{
-        name: 'MoreService',
-        constructor: ApplicationSerrvice
-    }],
+    services: [
+        ApplicationSerrvice,
+        DelayService,
+        CountService
+    ],
 };
 ```
 Конфигурация маршрутов
@@ -39,11 +37,11 @@ export const ROUTING: IRoutingConfig[] = [{
     path: '/home',
 }];
 ```
-Подключение экземпляра сервиса в компонент
+Подключение экземпляров сервисов в компонент
 ```ts
-@ConectToService({
-    component: HeadComponent,
-    service: 'ApplicationService'
+@InjectServices({
+    target: HeadComponent,
+    services: [ ApplicationSerrvice, CountService, DelayService ]
 })
 
 export class HeadComponent extends React.Component<IHeadComponentProps> {
@@ -53,12 +51,16 @@ export class HeadComponent extends React.Component<IHeadComponentProps> {
     constructor(props: any) {
         super(props);
         this.state = {
-            time: 0
+            time: null,
+            count: null,
+            delay: null
         };
     }
 
     componentDidMount() {
         this.props.service.workTime.subscribe(time => this.setState({ time: time}));
+        this.props.countService.currentCount.subscribe(count => this.setState({ count: count }));
+        this.props.delayService.delayTime.subscribe(d => this.setState({ delay: d }));
     }
 
     public render() {
@@ -72,6 +74,18 @@ export class HeadComponent extends React.Component<IHeadComponentProps> {
     }
 }
 ```
-
+Подключение зависисмых сервисов
+```ts
+@Injector({
+    target: ApplicationSerrvice,
+    services: [CountService, DelayService]
+})
+export class ApplicationSerrvice {
+constructor (
+        private countService: CountService,
+        private delayService: DelayService
+    ) { }
+}
+```
 # Внимание
 Проект на стадии идеи и эксперемента. Интересно развитие? Ставь звездочки и подписывайся.
