@@ -11,7 +11,7 @@ export class AppComponent extends React.Component<IAppComponent> {
         const routes = this.props.routes;
         return (
             <div className="application">
-                Hello ReactApp!
+                Привет React-Reactive!
                 <RouterOutlet config={routes} />
             </div>
         );

@@ -1,5 +1,5 @@
 /**
- * @file Decorator function for React-Reactive components
+ * @file Class Application
  * @author Kernichnyy Andrey
  * @version 0.0.2
  * @copyright eXlight 2018
@@ -41,38 +41,41 @@ export class ReactApp {
     }
 
     private initServices(serviceDscr: FunctionConstructor[] = []): void {
+        // TODO: Если у серивис зависит от себя.
         serviceDscr.forEach((Srv: any) => {
             const srvName = this.getInstanceName(Srv.name);
             if (Srv.prototype.servicesNames) {
                 const dpndsList = this.getDependencies(Srv.prototype.servicesNames, serviceDscr);
-                this.services[srvName ] = new Srv(...dpndsList);
+                this.services[srvName] = new Srv(...dpndsList);
             } else {
-                this.services[srvName] = new Srv();
+                if (!this.services[srvName]) {
+                    this.services[srvName] = new Srv();
+                }
             }
         });
-        console.log(this.services);
     }
 
-    private getDependencies(dpndsList: string[], serviceDscr: any[] = []): object[] {
-        if (dpndsList) {
-            const instanceList: object[] = [];
-            dpndsList.forEach(dpnd => {
-                const instName = this.getInstanceName(dpnd);
-                if (this.services[instName]) {
+    private getDependencies(dpndsList: string[] = [], serviceDscr: any[] = []): object[] {
+        const instanceList: object[] = [];
+
+        dpndsList.forEach(dpnd => {
+            const instName = this.getInstanceName(dpnd);
+            if (this.services[instName]) {
+                instanceList.push(this.services[instName]);
+            } else {
+                const SrvInst = serviceDscr.find(srv => srv.name === dpnd);
+                if (SrvInst.prototype.servicesNames) {
+                    const dpndsList = this.getDependencies(SrvInst.prototype.servicesNames, serviceDscr);
+                    this.services[instName] = new SrvInst(...dpndsList);
                     instanceList.push(this.services[instName]);
                 } else {
-                    const SrvInst = serviceDscr.find(srv => srv.name === dpnd);
-                    if (SrvInst.prototype.servicesNames) {
-                        const dpndsList = this.getDependencies(SrvInst.prototype.servicesNames, serviceDscr);
-                        this.services[instName] = new SrvInst(...dpndsList);
-                    } else {
-                        this.services[instName] = new SrvInst();
-                    }
+                    this.services[instName] = new SrvInst();
+                    instanceList.push(this.services[instName]);
                 }
-            })
+            }
+        })
 
-            return instanceList;
-        }
+        return instanceList;
     }
 
     private getInstanceName(className: string) {
