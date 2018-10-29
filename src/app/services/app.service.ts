@@ -17,6 +17,7 @@ export class ApplicationSerrvice {
         private countService: CountService,
         private delayService: DelayService
     ) {
+        console.log(arguments);
         this.countService.currentCount.subscribe(m => this.multiplier = m);
         this.delayService.delayTime.subscribe(d => {
             this.delayTime = d;

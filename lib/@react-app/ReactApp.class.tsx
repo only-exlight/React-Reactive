@@ -1,14 +1,14 @@
 /**
- * @file Class Application
+ * @file Class ReactReactive Application
  * @author Kernichnyy Andrey
- * @version 0.0.2
+ * @version 0.0.3
  * @copyright eXlight 2018
  */
 
 import { IRoutingConfig } from '../@routing';
 import { IReactAppConfig } from './ReactAppConfig.interface';
 import { BrowserRouter } from 'react-router-dom';
-import { render, } from 'react-dom';
+import { render } from 'react-dom';
 import * as React from 'react';
 
 export class ReactApp {
